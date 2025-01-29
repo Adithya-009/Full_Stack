@@ -6,6 +6,10 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
+  const totalFeedback = good + neutral + bad;
+  const averageScore = totalFeedback > 0 ? (good - bad) / totalFeedback : 0;
+  const positivePercentage = totalFeedback > 0 ? (good / totalFeedback) * 100 : 0;
+
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', textAlign: 'left', marginTop: '50px' }}>
       <h1>Give Feedback</h1>
@@ -34,7 +38,9 @@ const App = () => {
       <p><strong>Good:</strong> {good}</p>
       <p><strong>Neutral:</strong> {neutral}</p>
       <p><strong>Bad:</strong> {bad}</p>
-      <p><strong>Total Feedback:</strong> {good + neutral + bad}</p>
+      <p><strong>Total Feedback:</strong> {totalFeedback}</p>
+      <p><strong>Average Score:</strong> {averageScore.toFixed(2)}</p>
+      <p><strong>Positive Feedback:</strong> {positivePercentage.toFixed(2)}%</p>
     </div>
   );
 };
