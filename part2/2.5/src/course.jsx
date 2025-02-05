@@ -1,3 +1,4 @@
+// Course.js
 const Header = ({ course }) => <h1>{course}</h1>;
 
 const Content = ({ parts }) => (
