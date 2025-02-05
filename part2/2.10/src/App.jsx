@@ -1,35 +1,84 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ]);
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleNameChange = (event) => {
+    setNewName(event.target.value);
+  };
+
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const addPerson = (event) => {
+    event.preventDefault(); // Prevents form submission from reloading the page
+
+    // Check if the name already exists in the phonebook
+    const nameExists = persons.some(person => person.name === newName);
+    if (nameExists) {
+      alert(`${newName} is already added to phonebook`);
+      return;
+    }
+
+    // Add new contact to the phonebook
+    const newPerson = { name: newName, number: newNumber };
+    setPersons(persons.concat(newPerson));
+
+    // Clear input fields after adding a new contact
+    setNewName('');
+    setNewNumber('');
+  };
+
+  // Filter persons based on search query (case insensitive)
+  const filteredPersons = persons.filter(person =>
+    person.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <h2>Phonebook</h2>
 
-export default App
+      {/* Search Field */}
+      <div>
+        filter shown with: <input value={searchQuery} onChange={handleSearchChange} />
+      </div>
+      <h2>ADD NEW</h2>
+      {/* Add New Person Form */}
+      <form onSubmit={addPerson}>
+        <div>
+          name: <input value={newName} onChange={handleNameChange} />
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleNumberChange} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+
+      <h2>Numbers</h2>
+      <ul>
+        {filteredPersons.map(person => (
+          <li key={person.name}>
+            {person.name} - {person.number}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default App;
