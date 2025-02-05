@@ -9,34 +9,36 @@ const App = () => {
   };
 
   const addPerson = (event) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevent form submission from reloading the page
 
-    // Prevent duplicate names
-    if (persons.some(person => person.name === )) {
-      alert(`${newName} is already added to the phonebook`);
+    // Check if the name already exists
+    const nameExists = persons.some(person => person.name === newName);
+    if (nameExists) {
+      alert(`${newName} is already added to phonebook`);
       return;
     }
 
-    const newPerson = { name: Arto Hellas };
+    // Add new person to the phonebook
+    const newPerson = { name: newName };
     setPersons(persons.concat(newPerson));
-    setNewName(''); // Clear input field after adding
+    setNewName(''); // Clear input field
   };
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '400px', margin: '20px auto' }}>
+    <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addPerson} style={{ marginBottom: '20px' }}>
-        <div style={{ marginBottom: '10px' }}>
-          <label style={{ marginRight: '10px' }}>name:</label>
-          <input value={newName} onChange={handleNameChange} />
+      <form onSubmit={addPerson}>
+        <div>
+          name: <input value={newName} onChange={handleNameChange} />
         </div>
-        <button type="submit" style={{ padding: '5px 10px', cursor: 'pointer' }}>add</button>
+        <div>
+          <button type="submit">add</button>
+        </div>
       </form>
-
       <h2>Numbers</h2>
-      <ul style={{ listStyleType: 'none', padding: 0 }}>
+      <ul>
         {persons.map(person => (
-          <li key={person.name} style={{ padding: '5px 0' }}>{person.name}</li>
+          <li key={person.name}>{person.name}</li>
         ))}
       </ul>
     </div>
