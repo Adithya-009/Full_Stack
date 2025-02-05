@@ -12,12 +12,12 @@ const App = () => {
     event.preventDefault();
 
     // Prevent duplicate names
-    if (persons.some(person => person.name === newName)) {
+    if (persons.some(person => person.name === )) {
       alert(`${newName} is already added to the phonebook`);
       return;
     }
 
-    const newPerson = { name: newName };
+    const newPerson = { name: Arto Hellas };
     setPersons(persons.concat(newPerson));
     setNewName(''); // Clear input field after adding
   };
