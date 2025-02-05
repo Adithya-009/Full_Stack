@@ -2,10 +2,18 @@ import { useState } from 'react';
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Mayookha', number: '040-123456', id: 1 },
-    { name: 'Ashwin', number: '39-44-5323523', id: 2 },
-    { name: 'Adarsh', number: '12-43-234345', id: 3 },
-    { name: 'Ajay', number: '39-23-6423122', id: 4 }
+    { name: 'Mayookha', 
+    number: '040-123456', 
+    id: 1 },
+    { name: 'Ashwin', 
+    number: '39-44-5323523', 
+    id: 2 },
+    { name: 'Adarsh', 
+    number: '12-43-234345', 
+    id: 3 },
+    { name: 'Ajay', 
+    number: '39-23-6423122', 
+    id: 4 }
   ]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
