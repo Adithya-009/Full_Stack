@@ -7,7 +7,6 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch the data from the server when the component mounts
   useEffect(() => {
     axios.get('http://localhost:3001/persons')
       .then(response => {
@@ -55,7 +54,6 @@ const App = () => {
       });
   };
 
-  // Filter persons based on search query (case insensitive)
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
