@@ -24,25 +24,21 @@ const App = () => {
   };
 
   const addPerson = (event) => {
-    event.preventDefault(); // Prevents form submission from reloading the page
+    event.preventDefault(); 
 
-    // Check if the name already exists in the phonebook
     const nameExists = persons.some(person => person.name === newName);
     if (nameExists) {
       alert(`${newName} is already added to phonebook`);
       return;
     }
 
-    // Add new contact to the phonebook
     const newPerson = { name: newName, number: newNumber, id: persons.length + 1 };
     setPersons(persons.concat(newPerson));
 
-    // Clear input fields after adding a new contact
     setNewName('');
     setNewNumber('');
   };
 
-  // Filter persons based on the search term (case-insensitive)
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
