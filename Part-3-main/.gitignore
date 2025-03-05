@@ -1,4 +1,0 @@
-node_modules
-.env
-.git
-# Remove `dist/` from ignore so it is deployed
