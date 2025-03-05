@@ -19,7 +19,6 @@
     "eject": "react-scripts eject",
     "dev": "react-scripts start",
     "server": "json-server -p3001 --watch db.json"
-    
   },
   "eslintConfig": {
     "extends": [
@@ -40,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "json-server": "^0.17.2"
   },
   "proxy": "http://localhost:3001"
