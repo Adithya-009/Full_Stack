@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001/api/persons'; // Update this when deploying
+const baseUrl = 'https://full-stack-x6vl.onrender.com/api/persons'; // Update this when deploying
 
 const getAll = () => axios.get(baseUrl).then(response => response.data);
 const create = (newPerson) => axios.post(baseUrl, newPerson).then(response => response.data);

@@ -1,34 +1,28 @@
 const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan');  // Import Morgan
+const morgan = require('morgan');  
+const path = require('path');  // Required for serving frontend
+
+// Import middleware
+const loggerMiddleware = require('./middleware/logger');
+const errorHandler = require('./middleware/errorHandler');
+const notFoundHandler = require('./middleware/notFound');
 
 const app = express();
 
-app.use(express.json());
+app.use(express.static('dist'));
 app.use(cors());
+app.use(loggerMiddleware); // Logging middleware
 
-// Custom Morgan token to log POST request body
-morgan.token('postData', (req) => {
-  return req.method === 'POST' ? JSON.stringify(req.body) : '';
+// Serve the frontend build from 'dist'
+app.use(express.static('dist'));
+
+// Root route (serves frontend)
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
 
-// Use Morgan with a custom format that logs POST request data
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postData'));
-
-// Root route with links to API endpoints
-app.get('/', (req, res) => {
-  res.send(`
-    <h1>Welcome to the Phonebook API!</h1>
-    <p>Available routes:</p>
-    <ul>
-      <li><a href="/api/persons">View all persons</a></li>
-      <li><a href="/info">View info</a></li>
-      <li>To get a single person: <code>/api/persons/:id</code> (replace :id with a number)</li>
-    </ul>
-  `);
-});
-
-// Hardcoded phonebook data
+// API Endpoints
 let persons = [
   { id: "1", name: "Arto Hellas", number: "040-123456" },
   { id: "2", name: "Ada Lovelace", number: "39-44-5323523" },
@@ -36,21 +30,17 @@ let persons = [
   { id: "4", name: "Mary Poppendieck", number: "39-23-6423122" }
 ];
 
-// GET all persons
 app.get('/api/persons', (req, res) => res.json(persons));
 
-// GET info
 app.get('/info', (req, res) => {
   res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`);
 });
 
-// GET a single person by ID
 app.get('/api/persons/:id', (req, res) => {
   const person = persons.find(p => p.id === req.params.id);
   person ? res.json(person) : res.status(404).json({ error: 'Person not found' });
 });
 
-// DELETE a person by ID
 app.delete('/api/persons/:id', (req, res) => {
   const initialLength = persons.length;
   persons = persons.filter(p => p.id !== req.params.id);
@@ -59,7 +49,6 @@ app.delete('/api/persons/:id', (req, res) => {
     : res.status(204).end();
 });
 
-// POST a new person with validation
 app.post('/api/persons', (req, res) => {
   const { name, number } = req.body;
   if (!name) return res.status(400).json({ error: 'name is missing' });
@@ -71,6 +60,17 @@ app.post('/api/persons', (req, res) => {
   res.json(newPerson);
 });
 
+// Handle React frontend routes (for client-side routing)
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+});
+
+// Middleware for handling 404 errors
+app.use(notFoundHandler);
+
+// Error handling middleware
+app.use(errorHandler);
+
 // Start the server
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
